@@ -1,1 +1,17 @@
-
+{
+  "welcome_msg": "স্মার্ট ফেনী অ্যাপে স্বাগতম",
+  "services": [
+    { 
+      "id": 1, 
+      "label": "হাসপাতাল", 
+      "icon": "Heart", 
+      "bg": "bg-red-50", 
+      "color": "text-red-500",
+      "data": [
+         { "name": "ফেনী সদর", "loc": "সদর রোড", "phone": "017..." } 
+      ]
+    }
+  ],
+  "news": [],
+  "blood_banks": []
+}
