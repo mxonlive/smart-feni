@@ -1,0 +1,9 @@
+{
+  "name": "Smart Feni",
+  "short_name": "SmartFeni",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#cc0000",
+  "icons": []
+}
