@@ -1,4 +1,4 @@
-name: Production Build (Smart Feni)
+name: Build Smart Feni (Final Fix)
 
 on:
   push:
@@ -33,36 +33,30 @@ jobs:
           npm install @capacitor/assets --save-dev
           npm install -D tailwindcss postcss autoprefixer
 
-      # --------------------------------------------------------
-      # 🚀 APP ICON GENERATION (FORCE METHOD)
-      # --------------------------------------------------------
-      - name: Generate App Assets
-        run: |
-          # Create standard Capacitor resource structure
-          mkdir -p assets
-          
-          # Force copy user logo to correct paths
-          cp public/logo.png assets/icon.png
-          cp public/logo.png assets/splash.png
-          
-          # Generate Android resources with white background
-          npx @capacitor/assets generate --android --iconBackgroundColor '#ffffff' --splashBackgroundColor '#ffffff'
-          
-          # List generated files to verify in logs
-          ls -R android/app/src/main/res/
-
       - name: Build Web App
         run: npm run build
         env:
           CI: false
-
-      - name: Initialize Capacitor
+          
+      - name: Initialize Capacitor & Add Android
         run: |
           npx cap init "Smart Feni" "com.mxonlive.smartfeni" --web-dir build
           npx cap add android
-          npx cap sync android
 
-      - name: Build Android APK
+      
+      - name: Generate App Assets
+        run: |
+          mkdir -p assets
+          cp public/logo.png assets/icon.png
+          cp public/logo.png assets/splash.png
+          
+         
+          npx @capacitor/assets generate --android --iconBackgroundColor '#ffffff' --splashBackgroundColor '#ffffff'
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Build APK
         run: |
           cd android
           chmod +x gradlew
@@ -71,5 +65,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Smart-Feni-Production-v1.2
+          name: Smart-Feni-Production
           path: android/app/build/outputs/apk/debug/app-debug.apk
