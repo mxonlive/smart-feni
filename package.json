@@ -5,6 +5,7 @@
   "dependencies": {
     "@capacitor/android": "^6.0.0",
     "@capacitor/core": "^6.0.0",
+    "@capacitor/assets": "^3.0.0",
     "axios": "^1.6.0",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.292.0",
@@ -17,7 +18,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate-icons": "capacitor-assets generate --android"
   },
   "browserslist": {
     "production": [
