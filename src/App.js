@@ -4,12 +4,12 @@ import * as LucideIcons from 'lucide-react';
 import { 
   Menu, Bell, X, Phone, CloudSun, AlertTriangle, 
   Map as MapIcon, Search, WifiOff, ChevronRight, 
-  User, Info, Calendar
+  Terminal, Calendar, Code2, Zap
 } from 'lucide-react';
 
-// ⚠️ 
-const DATA_URL = "https://raw.githubusercontent.com/mxonlive/smart-feni/refs/heads/main/content_data.json";
-const CACHE_KEY = "smart_feni_v2_cache";
+// ⚠️ content_data.json
+const DATA_URL = "https://ripatrishat.github.io/smart-feni-app/all_data.json";
+const CACHE_KEY = "smart_feni_final_cache";
 
 const App = () => {
   // ─── STATE MANAGEMENT ───
@@ -78,9 +78,13 @@ const App = () => {
   if (loading) return (
     <div className="h-screen w-full bg-[#cc0000] flex flex-col items-center justify-center relative overflow-hidden">
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-      <div className="w-20 h-20 border-[6px] border-white/20 border-t-white rounded-full animate-spin mb-6"></div>
+      {/* Animated Logo Placeholder */}
+      <div className="relative mb-8">
+         <div className="absolute inset-0 bg-white blur-xl opacity-30 animate-pulse rounded-full"></div>
+         <img src="logo.png" alt="Loading" className="w-24 h-24 object-contain relative z-10 animate-bounce" />
+      </div>
       <h1 className="text-white font-black text-3xl tracking-[0.3em] uppercase animate-pulse">Smart Feni</h1>
-      <p className="text-white/60 text-xs mt-2 font-bold uppercase tracking-widest">Initializing...</p>
+      <p className="text-white/60 text-xs mt-3 font-bold uppercase tracking-widest bg-black/20 px-4 py-1 rounded-full">System Initializing</p>
     </div>
   );
 
@@ -89,7 +93,7 @@ const App = () => {
       
       {/* ─── OFFLINE ALERT ─── */}
       {isOffline && (
-        <div className="bg-slate-800 text-white text-[11px] font-bold text-center py-2 flex items-center justify-center gap-2 sticky top-0 z-[999] shadow-md">
+        <div className="bg-slate-800 text-white text-[11px] font-bold text-center py-2 flex items-center justify-center gap-2 sticky top-0 z-[999] shadow-md animate-in slide-in-from-top">
           <WifiOff size={14} className="text-red-500"/>
           <span>ইন্টারনেট সংযোগ নেই। অফলাইন মোড চালু।</span>
         </div>
@@ -100,12 +104,12 @@ const App = () => {
         <div className="fixed inset-0 z-[999] flex items-center justify-center p-6 animate-in fade-in duration-300">
            <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setShowNoticeModal(false)}></div>
            <div className="bg-white w-full max-w-sm rounded-[2rem] p-6 relative shadow-2xl animate-in zoom-in-95 duration-300 border-t-[6px] border-[#cc0000]">
-              <div className="w-16 h-16 bg-red-50 text-[#cc0000] rounded-full flex items-center justify-center mx-auto mb-4 border border-red-100">
+              <div className="w-16 h-16 bg-red-50 text-[#cc0000] rounded-full flex items-center justify-center mx-auto mb-4 border border-red-100 shadow-inner">
                 <AlertTriangle size={32} />
               </div>
               <h2 className="text-xl font-black text-center text-slate-900 mb-2">{data.notice.title}</h2>
               <div className="h-px w-20 bg-slate-100 mx-auto mb-4"></div>
-              <p className="text-sm text-slate-600 text-center leading-relaxed mb-6 font-medium">{data.notice.message}</p>
+              <p className="text-sm text-slate-600 text-center leading-relaxed mb-6 font-medium bg-slate-50 p-3 rounded-xl border border-slate-100">{data.notice.message}</p>
               <button onClick={() => { setShowNoticeModal(false); setHasUnread(false); }} className="w-full py-3.5 bg-[#cc0000] text-white font-bold rounded-xl active:scale-95 transition shadow-lg shadow-red-200">বুঝেছি</button>
            </div>
         </div>
@@ -115,34 +119,38 @@ const App = () => {
       {showNotifHistory && (
         <div className="fixed inset-0 z-[200] flex justify-end animate-in fade-in duration-200">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowNotifHistory(false)}></div>
-          <div className="bg-white w-[300px] h-full shadow-2xl p-6 animate-in slide-in-from-right duration-300 rounded-l-[2rem] relative z-10">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="font-black text-lg flex items-center gap-2"><Bell size={20}/> নোটিফিকেশন</h3>
-              <button onClick={() => setShowNotifHistory(false)} className="bg-slate-100 p-2 rounded-full"><X size={18}/></button>
+          <div className="bg-white w-[300px] h-full shadow-2xl p-6 animate-in slide-in-from-right duration-300 rounded-l-[2.5rem] relative z-10">
+            <div className="flex justify-between items-center mb-8">
+              <h3 className="font-black text-lg flex items-center gap-2 text-slate-800"><Bell size={20} className="text-[#cc0000]"/> নোটিফিকেশন</h3>
+              <button onClick={() => setShowNotifHistory(false)} className="bg-slate-100 p-2 rounded-full hover:bg-slate-200 transition"><X size={18}/></button>
             </div>
             
             <div className="space-y-4">
                {/* Last Update Info */}
-               <div className="bg-blue-50 p-4 rounded-2xl border border-blue-100">
-                  <div className="flex items-center gap-2 mb-2">
+               <div className="bg-blue-50 p-4 rounded-2xl border border-blue-100 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-12 h-12 bg-blue-100 rounded-bl-full -mr-2 -mt-2 opacity-50"></div>
+                  <div className="flex items-center gap-2 mb-2 relative z-10">
                     <Calendar size={14} className="text-blue-600"/>
-                    <span className="text-xs font-bold text-blue-600">Last Database Update</span>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-blue-600">Database Status</span>
                   </div>
-                  <p className="text-sm font-bold text-slate-700">{data.config?.last_updated}</p>
+                  <p className="text-sm font-bold text-slate-700 relative z-10">Updated: {data.config?.last_updated}</p>
                </div>
 
                {/* Active Notice */}
                {data.notice?.active ? (
-                 <div className="bg-red-50 p-4 rounded-2xl border border-red-100">
+                 <div className="bg-red-50 p-4 rounded-2xl border border-red-100 relative overflow-hidden">
                     <div className="flex items-center gap-2 mb-2">
-                      <AlertTriangle size={14} className="text-red-600"/>
-                      <span className="text-xs font-bold text-red-600">Emergency Alert</span>
+                      <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                      <span className="text-[10px] font-black uppercase tracking-wider text-red-600">Live Alert</span>
                     </div>
                     <h4 className="font-bold text-slate-800 text-sm mb-1">{data.notice.title}</h4>
-                    <p className="text-xs text-slate-600 leading-relaxed">{data.notice.message}</p>
+                    <p className="text-xs text-slate-600 leading-relaxed opacity-90">{data.notice.message}</p>
                  </div>
                ) : (
-                 <p className="text-center text-xs text-slate-400 py-10">কোনো নতুন নোটিশ নেই</p>
+                 <div className="text-center py-10 opacity-50">
+                    <Bell size={32} className="mx-auto mb-2 text-slate-300"/>
+                    <p className="text-xs font-bold text-slate-400">কোনো নতুন নোটিশ নেই</p>
+                 </div>
                )}
             </div>
           </div>
@@ -150,71 +158,90 @@ const App = () => {
       )}
 
       {/* ─── HEADER ─── */}
-      <header className="sticky top-0 z-[50] bg-[#cc0000] text-white px-5 py-4 flex justify-between items-center shadow-xl shadow-red-900/10 rounded-b-[2rem]">
+      <header className="sticky top-0 z-[50] bg-[#cc0000] text-white px-5 py-4 flex justify-between items-center shadow-xl shadow-red-900/10 rounded-b-[2.5rem]">
         <div className="flex items-center gap-4">
-          <button onClick={() => setIsDrawerOpen(true)} className="p-2.5 bg-white/20 backdrop-blur-md rounded-2xl active:scale-95 transition ring-1 ring-white/20">
+          <button onClick={() => setIsDrawerOpen(true)} className="p-2.5 bg-white/20 backdrop-blur-md rounded-2xl active:scale-95 transition ring-1 ring-white/20 hover:bg-white/30">
             <Menu size={24} />
           </button>
           <div>
             <h1 className="text-xl font-black uppercase tracking-tight leading-none">{data.config?.app_name}</h1>
-            <span className="text-[10px] font-bold opacity-90 uppercase tracking-widest bg-black/10 px-2 py-0.5 rounded-md mt-1 inline-block">
+            <span className="text-[10px] font-bold opacity-90 uppercase tracking-widest bg-black/10 px-2 py-0.5 rounded-md mt-1.5 inline-block backdrop-blur-sm border border-white/5">
               {data.config?.app_version}
             </span>
           </div>
         </div>
-        <button onClick={() => setShowNotifHistory(true)} className="relative p-2.5 bg-white/20 backdrop-blur-md rounded-2xl active:scale-95 transition ring-1 ring-white/20">
+        <button onClick={() => setShowNotifHistory(true)} className="relative p-2.5 bg-white/20 backdrop-blur-md rounded-2xl active:scale-95 transition ring-1 ring-white/20 hover:bg-white/30">
           <Bell size={24} />
           {hasUnread && <span className="absolute top-2.5 right-3 w-2.5 h-2.5 bg-yellow-400 border-2 border-red-600 rounded-full animate-ping"></span>}
         </button>
       </header>
 
-      {/* ─── MAIN DRAWER ─── */}
+      {/* ─── MAIN DRAWER (SIDEBAR) ─── */}
       {isDrawerOpen && (
         <div className="fixed inset-0 z-[100] flex animate-in fade-in duration-300">
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setIsDrawerOpen(false)}></div>
           <div className="relative bg-white w-[85%] max-w-[320px] h-full shadow-2xl flex flex-col animate-in slide-in-from-left duration-500 rounded-r-[3rem]">
             
-            {/* Header */}
+            {/* Drawer Header with LOGO */}
             <div className="bg-gradient-to-br from-[#cc0000] to-[#990000] p-8 text-white rounded-br-[3rem] relative overflow-hidden">
                <div className="relative z-10">
-                 <div className="w-16 h-16 bg-white text-[#cc0000] rounded-[1.5rem] flex items-center justify-center font-black text-4xl shadow-xl mb-4">S</div>
+                 {/* LOGO IMAGE */}
+                 <div className="w-20 h-20 bg-white rounded-[1.8rem] flex items-center justify-center shadow-2xl mb-5 p-3">
+                    <img src="logo.png" alt="Logo" className="w-full h-full object-contain drop-shadow-md"/>
+                 </div>
                  <h2 className="text-2xl font-black tracking-tight">{data.config?.app_name}</h2>
+                 <p className="text-xs opacity-80 font-bold mt-1 tracking-wide">ফেনী জেলার ডিজিটাল গেটওয়ে</p>
                </div>
-               <CloudSun className="absolute -right-8 -bottom-8 opacity-10 rotate-12" size={180}/>
+               {/* Background Decoration */}
+               <CloudSun className="absolute -right-8 -bottom-8 opacity-10 rotate-12" size={200}/>
+               <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full blur-3xl -mr-10 -mt-10"></div>
             </div>
 
-            {/* Menu */}
+            {/* Menu Items */}
             <nav className="p-6 space-y-3 flex-1 overflow-y-auto no-scrollbar">
               {[
                 {id: 'home', label: 'হোম ড্যাশবোর্ড', icon: 'Home'},
                 {id: 'blood', label: 'ব্লাড ব্যাংক', icon: 'Droplets'},
                 {id: 'map', label: 'লাইভ ম্যাপ', icon: 'Map'},
               ].map((item) => (
-                <button key={item.id} onClick={() => {setActiveTab(item.id); setIsDrawerOpen(false)}} className={`w-full flex items-center gap-4 p-4 rounded-[1.2rem] font-bold transition-all ${activeTab === item.id ? 'bg-red-50 text-red-600 shadow-md ring-1 ring-red-100' : 'text-slate-500 hover:bg-slate-50'}`}>
+                <button key={item.id} onClick={() => {setActiveTab(item.id); setIsDrawerOpen(false)}} className={`w-full flex items-center gap-4 p-4 rounded-[1.5rem] font-bold transition-all ${activeTab === item.id ? 'bg-red-50 text-red-600 shadow-lg shadow-red-100/50 ring-1 ring-red-100' : 'text-slate-500 hover:bg-slate-50'}`}>
                   <Icon name={item.icon} size={22}/> {item.label}
                 </button>
               ))}
               
-              <div className="my-4 border-t border-slate-100"></div>
+              <div className="my-6 border-t border-slate-100"></div>
               
-              <button onClick={() => window.open('tel:999')} className="w-full flex items-center gap-4 p-4 bg-red-50 text-red-600 rounded-[1.2rem] font-bold active:scale-95 transition border border-red-100">
+              <button onClick={() => window.open('tel:999')} className="w-full flex items-center gap-4 p-4 bg-red-50 text-red-600 rounded-[1.5rem] font-bold active:scale-95 transition border border-red-100 shadow-sm">
                 <Phone size={22}/> ইমার্জেন্সি ৯৯৯
               </button>
             </nav>
 
-            {/* Developer Card (Redesigned) */}
-            <div className="p-5 pb-8">
-               <div className="bg-slate-50 rounded-[1.5rem] p-5 border border-slate-100 text-center relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-purple-500"></div>
-                  <User size={24} className="mx-auto text-slate-400 mb-2"/>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Developed By</p>
-                  <h4 className="text-sm font-black text-slate-800">{data.config?.developer_name}</h4>
-                  <div className="mt-3 inline-flex items-center gap-1 bg-white px-3 py-1 rounded-full shadow-sm border border-slate-100">
-                     <span className="text-[10px] text-slate-500 font-bold">Assist:</span>
-                     <span className="text-[10px] font-black text-[#cc0000]">{data.config?.assistant_name}</span>
+            {/* 🔥 NEW PREMIUM DEVELOPER SECTION 🔥 */}
+            <div className="p-6 pb-8">
+               <div className="bg-white rounded-[1.8rem] p-5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-slate-100 relative overflow-hidden group">
+                  {/* Decorative Gradient Line */}
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+                  
+                  {/* Content */}
+                  <div className="relative z-10 flex flex-col items-center text-center">
+                     <div className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-slate-600 mb-3 group-hover:bg-[#cc0000] group-hover:text-white transition-colors duration-300">
+                        <Code2 size={18} />
+                     </div>
+                     <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1">Architect</p>
+                     <h4 className="text-sm font-black text-slate-800">{data.config?.developer_name}</h4>
+                     
+                     <div className="mt-4 flex items-center gap-2 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-full">
+                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                        <span className="text-[10px] font-bold text-slate-500">AI Assist:</span>
+                        <span className="text-[10px] font-black text-[#cc0000]">{data.config?.assistant_name}</span>
+                     </div>
                   </div>
+                  
+                  {/* Background Glow */}
+                  <div className="absolute -right-6 -bottom-6 w-20 h-20 bg-red-50 rounded-full blur-2xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
                </div>
             </div>
+
           </div>
         </div>
       )}
@@ -227,8 +254,10 @@ const App = () => {
           <div className="bg-gradient-to-br from-[#cc0000] to-slate-900 p-8 rounded-[2.5rem] text-white shadow-xl shadow-red-900/20 relative overflow-hidden group">
              <div className="relative z-10">
                <div className="flex items-center gap-2 mb-3">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                  <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">Live Update: {data.config?.last_updated}</span>
+                  <div className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-2 border border-white/10">
+                     <Zap size={12} className="text-yellow-300 fill-yellow-300"/>
+                     <span className="text-[10px] font-bold uppercase tracking-wider">Live Update</span>
+                  </div>
                </div>
                <h2 className="text-3xl font-black leading-tight">{data.config?.welcome_title}</h2>
                <p className="opacity-90 text-sm mt-3 font-medium leading-relaxed max-w-[90%]">{data.config?.welcome_subtitle}</p>
@@ -244,7 +273,7 @@ const App = () => {
             <div className="flex gap-4 overflow-x-auto pb-4 px-1 no-scrollbar snap-x">
                {data.emergency?.map((em, i) => (
                   <button key={i} onClick={() => window.open(`tel:${em.phone}`)} className="snap-start min-w-[150px] bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100 flex flex-col items-center text-center gap-3 active:scale-95 transition-all group">
-                     <div className={`w-14 h-14 ${em.bg} rounded-full flex items-center justify-center ${em.color} shadow-inner group-hover:scale-110 transition-transform duration-300`}>
+                     <div className={`w-14 h-14 ${em.bg} rounded-[1.2rem] flex items-center justify-center ${em.color} shadow-inner group-hover:scale-110 transition-transform duration-300`}>
                         <Icon name={em.icon} size={26}/>
                      </div>
                      <div>
