@@ -1,0 +1,18 @@
+{
+  "appId": "com.mxonlive.smartfeni",
+  "appName": "Smart Feni",
+  "webDir": "build",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true,
+    "allowNavigation": [
+      "raw.githubusercontent.com",
+      "*"
+    ]
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
+  }
+}
