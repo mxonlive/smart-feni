@@ -4,15 +4,6 @@
   "webDir": "build",
   "server": {
     "androidScheme": "https",
-    "cleartext": true,
-    "allowNavigation": [
-      "raw.githubusercontent.com",
-      "*"
-    ]
-  },
-  "plugins": {
-    "CapacitorHttp": {
-      "enabled": true
-    }
+    "cleartext": true
   }
 }
