@@ -1,4 +1,4 @@
-name: Build Smart Feni (With Real Icon)
+name: Build Smart Feni (Final)
 
 on:
   push:
@@ -33,30 +33,25 @@ jobs:
           npm install @capacitor/assets --save-dev
           npm install -D tailwindcss postcss autoprefixer
 
-      # -----------------------------------------------------
-      # ⚠️ IMPORTANT: Generating Icons from public/logo.png
-      # -----------------------------------------------------
       - name: Generate Real App Icons
         run: |
           mkdir -p assets
-          # কপি করা হচ্ছে কারণ capacitor-assets ডিফল্ট assets ফোল্ডার খোঁজে
           cp public/logo.png assets/icon.png
           cp public/logo.png assets/splash.png
-          # জেনারেট কমান্ড
-          npx capacitor-assets generate --android
+          npx @capacitor/assets generate --android --iconBackgroundColor '#ffffff' --splashBackgroundColor '#ffffff'
 
-      - name: Build React App
+      - name: Build React Web App
         run: npm run build
         env:
           CI: false
 
-      - name: Init Capacitor
+      - name: Initialize Capacitor
         run: |
           npx cap init "Smart Feni" "com.mxonlive.smartfeni" --web-dir build
           npx cap add android
           npx cap sync android
 
-      - name: Build APK (Release/Debug)
+      - name: Build APK
         run: |
           cd android
           chmod +x gradlew
@@ -65,5 +60,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Smart-Feni-Updated
+          name: Smart-Feni-App
           path: android/app/build/outputs/apk/debug/app-debug.apk
