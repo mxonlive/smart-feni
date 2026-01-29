@@ -1,4 +1,4 @@
-name: Build Smart Feni Android App
+name: Fixed Smart Feni Build
 
 on:
   push:
@@ -31,19 +31,24 @@ jobs:
         run: |
           npm install
           npm install -D tailwindcss postcss autoprefixer
-          npm install @capacitor/core @capacitor/cli @capacitor/android axios lucide-react framer-motion
 
-      - name: Initialize Capacitor (Auto-generate Config if missing)
+      # লোগো সেটআপের ম্যাজিক স্টেপ
+      - name: Setup Icons & Splash
         run: |
-          npx cap init "Smart Feni" "com.mxonlive.smartfeni" --web-dir build
+          mkdir -p assets
+          cp public/logo.png assets/icon.png
+          cp public/logo.png assets/splash.png
+          # আইকন জেনারেট করা হচ্ছে
+          npx capacitor-assets generate --android
 
       - name: Build React App
         run: npm run build
         env:
           CI: false
 
-      - name: Add Android Platform (Auto-generate Android Folder)
+      - name: Initialize & Sync Capacitor
         run: |
+          npx cap init "Smart Feni" "com.mxonlive.smartfeni" --web-dir build
           npx cap add android
           npx cap sync android
 
@@ -53,8 +58,8 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: Upload Fixed APK
         uses: actions/upload-artifact@v4
         with:
-          name: Smart-Feni-App-v1
+          name: Smart-Feni-Fixed-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
