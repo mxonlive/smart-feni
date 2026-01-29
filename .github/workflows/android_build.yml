@@ -1,4 +1,4 @@
-name: Build Smart Feni (Final)
+name: Production Build (Smart Feni)
 
 on:
   push:
@@ -33,14 +33,25 @@ jobs:
           npm install @capacitor/assets --save-dev
           npm install -D tailwindcss postcss autoprefixer
 
-      - name: Generate Real App Icons
+      # --------------------------------------------------------
+      # 🚀 APP ICON GENERATION (FORCE METHOD)
+      # --------------------------------------------------------
+      - name: Generate App Assets
         run: |
+          # Create standard Capacitor resource structure
           mkdir -p assets
+          
+          # Force copy user logo to correct paths
           cp public/logo.png assets/icon.png
           cp public/logo.png assets/splash.png
+          
+          # Generate Android resources with white background
           npx @capacitor/assets generate --android --iconBackgroundColor '#ffffff' --splashBackgroundColor '#ffffff'
+          
+          # List generated files to verify in logs
+          ls -R android/app/src/main/res/
 
-      - name: Build React Web App
+      - name: Build Web App
         run: npm run build
         env:
           CI: false
@@ -51,7 +62,7 @@ jobs:
           npx cap add android
           npx cap sync android
 
-      - name: Build APK
+      - name: Build Android APK
         run: |
           cd android
           chmod +x gradlew
@@ -60,5 +71,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Smart-Feni-App
+          name: Smart-Feni-Production-v1.2
           path: android/app/build/outputs/apk/debug/app-debug.apk
